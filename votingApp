@@ -2,7 +2,7 @@
 pragma solidity ^0.8.18;
 
 contract ProposalContract {
-
+uint256 private counter; // This line is added
     struct Proposal {
         string description; // Description of the proposal
         uint256 approve; // Number of approve votes
