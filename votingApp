@@ -31,7 +31,7 @@ contract ProposalContract {
 
     // Modifier to check where proposal is active or not
     modifier active() {
-    require(proposal_history[counter].is_active == true, "The proposal is not active");
+    require(proposal_history[counter].is_active == true);
     _;
     }
 
@@ -40,6 +40,7 @@ contract ProposalContract {
         _;
     }
 
+// ****************** Execute Functions ***********************
 
     // Function to set the owner of the contrac in case of transfer of ownership
     function setOwner(address new_owner) external onlyOwner {
@@ -93,13 +94,29 @@ contract ProposalContract {
         }
     }
 
-    // Function to check if an address has voted
-    function isVoted(address _address) private view returns (bool) {
-        for (uint i = 0; i < voted_addresses.length; i++) {
-            if (voted_addresses[i] == _address) {
-                return true;
-            }
-        }
-        return false;
+
+    // Function to terminate a proposal
+    function teminateProposal() external onlyOwner active {
+    proposal_history[counter].is_active = false;
     }
+
+    // Function to check if an address has voted
+    function isVoted(address _address) public view returns (bool) {
+    for (uint i = 0; i < voted_addresses.length; i++) {
+        if (voted_addresses[i] == _address) {
+            return true;
+        }
+    }
+    return false;
+    }
+
+    // Function to retrieve the current proposal
+    function getCurrentProposal() external view returns(Proposal memory) {
+    return proposal_history[counter];
+    }
+
+    // Function to get a specific proposal by number
+    function getProposal(uint256 number) external view returns(Proposal memory) {
+    return proposal_history[number];
+}
 }
